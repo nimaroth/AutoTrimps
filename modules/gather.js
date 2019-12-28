@@ -33,6 +33,7 @@ function manualLabor2() {
     game.resources.wood.owned = game.resources.wood.max;
     game.resources.metal.owned = game.resources.metal.max;
     game.resources.science.owned = game.resources.metal.max;
+
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
         if(!safeBuyBuilding('Trap'))
