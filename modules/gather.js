@@ -64,7 +64,7 @@ function manualLabor2() {
     // else
     //     game.resources.helium.owned = 1000;
 
-    console.log(autoTrimpSettings)
+    console.log(getPageSetting('SpeedRessources'))
     if (getPageSetting('SpeedRessources')) {
         game.resources.food.owned = game.resources.food.owned * 2 + 1000;
         game.resources.wood.owned = game.resources.wood.owned * 2 + 1000;
