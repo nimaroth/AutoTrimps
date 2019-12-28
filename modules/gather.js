@@ -27,6 +27,7 @@ function manualLabor2() {
         }
     }
 
+    console.log(trapTrimpsOK, breedingTrimps, trapperTrapUntilFull, game.global.challengeActive, game.buildings.Trap.owned)
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
         if(!safeBuyBuilding('Trap'))
