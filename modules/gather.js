@@ -64,7 +64,7 @@ function manualLabor2() {
     // else
     //     game.resources.helium.owned = 1000;
 
-    if (getPageSetting('gathermetal')) {
+    if (getPageSetting('SpeedRessources')) {
         game.resources.food.owned = game.resources.food.owned * 2 + 1000;
         game.resources.wood.owned = game.resources.wood.owned * 2 + 1000;
         game.resources.metal.owned = game.resources.metal.owned * 2 + 1000;
