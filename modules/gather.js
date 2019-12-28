@@ -64,14 +64,15 @@ function manualLabor2() {
     // else
     //     game.resources.helium.owned = 1000;
 
-
-    game.resources.food.owned = game.resources.food.owned * 2 + 1000;
-    game.resources.wood.owned = game.resources.wood.owned * 2 + 1000;
-    game.resources.metal.owned = game.resources.metal.owned * 2 + 1000;
-    game.resources.science.owned = game.resources.science.owned * 2 + 1000;
-    game.resources.gems.owned = game.resources.gems.owned * 2 + 1000;
-    game.resources.fragments.owned = game.resources.fragments.owned * 2 + 1000;
-    game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
+    if (getPageSetting('gathermetal')) {
+        game.resources.food.owned = game.resources.food.owned * 2 + 1000;
+        game.resources.wood.owned = game.resources.wood.owned * 2 + 1000;
+        game.resources.metal.owned = game.resources.metal.owned * 2 + 1000;
+        game.resources.science.owned = game.resources.science.owned * 2 + 1000;
+        game.resources.gems.owned = game.resources.gems.owned * 2 + 1000;
+        game.resources.fragments.owned = game.resources.fragments.owned * 2 + 1000;
+        game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
+    }
 
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
