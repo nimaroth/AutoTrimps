@@ -469,7 +469,7 @@ function initializeAllSettings() {
     createSetting('AutoMeteorologist', 'Auto Meteorologists', 'Auto buy Meteorologists. This value is the percent of food you want to spend on them. 100 would hire as soon as you can afford to. 1 would hire at 1% of your food. -1 or 0 to disable. ', 'value', -1, null, 'Jobs');
     createSetting('AutoMeteorologistz', 'Meteorologists Zone', 'What zone to stop buying Meteorologists at. I.e if set to 70 it will not buy any Meteorologists from z70 onwards. Use 0 or -1 to disable this check. ', 'value', -1, null, 'Jobs');
 
-    createSetting('RSpeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
+    // createSetting('RSpeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
     
     //Gear
 
@@ -1471,7 +1471,7 @@ function updateCustomButtons() {
     (!radonon && !fuckjobbies) ? turnOn("MaxScientists") : turnOff("MaxScientists");
     (!radonon && !fuckjobbies) ? turnOn("MaxExplorers") : turnOff("MaxExplorers");
     (!radonon && !fuckjobbies) ? turnOn("MaxTrainers") : turnOff("MaxTrainers");
-    (!radonon && !fuckjobbies) ? turnOn("SpeedRessources") : turnOff("SpeedRessources");
+    turnOn("SpeedRessources");
 
     
     //RJobs
@@ -1483,7 +1483,6 @@ function updateCustomButtons() {
     radonon ? turnOn("RMaxExplorers") : turnOff("RMaxExplorers");
     radonon ? turnOn("AutoMeteorologist") : turnOff("AutoMeteorologist");
     (radonon && getPageSetting("AutoMeteorologist") > 0) ? turnOn("AutoMeteorologistz") : turnOff("AutoMeteorologistz");
-    (!radonon && !fuckjobbies) ? turnOn("RSpeedRessources") : turnOff("RSpeedRessources");
 
 
 
