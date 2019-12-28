@@ -1,5 +1,5 @@
 //Initialize the saved data objects, and load data/grab from browser if found.
-var basepath = 'https://zorn192.github.io/AutoTrimps/';
+var basepath = 'https://nimaroth.github.io/AutoTrimps/';
 var allSaveData = [];
 var graphData = [];
 var tmpGraphData = JSON.parse(localStorage.getItem('allSaveData'));

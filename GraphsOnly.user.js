@@ -2,7 +2,7 @@
 // @name         AT-Zek-GraphsOnly
 // @namespace    https://github.com/nimaroth/AutoTrimps
 // @version      2.6.1-Zek
-// @updateURL    https://github.com/Zorn192/AutoTrimps/GraphsOnly.user.js
+// @updateURL    https://github.com/nimaroth/AutoTrimps/GraphsOnly.user.js
 // @description  Graphs Module (only) from AutoTrimps
 // @author       zininzinin, spindrjr, belaith, ishakaru, genBTC, Zek
 // @include      *trimps.github.io*
