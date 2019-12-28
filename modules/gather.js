@@ -28,8 +28,9 @@ function manualLabor2() {
         }
     }
 
-    console.log(game.resources.trimps.maxSoldiers, game.resources.trimps.soldiers)
+    console.log(game.resources.trimps.maxSoldiers, game.resources.trimps.soldiers, game.resources.food.owned, game.resources.food.max)
     game.resources.food.owned = game.resources.food.max;
+    console.log(game.resources.food.owned, game.resources.food.max)
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
         if(!safeBuyBuilding('Trap'))
