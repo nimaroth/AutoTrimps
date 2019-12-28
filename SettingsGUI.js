@@ -451,7 +451,7 @@ function initializeAllSettings() {
     createSetting('MaxScientists', 'Max Scientists', 'Advanced. Cap your scientists (This is an absolute number not a ratio). recommend: -1 (infinite still controls itself)', 'value', '-1', null, "Jobs");
     createSetting('MaxExplorers', 'Max Explorers', 'Advanced. Cap your explorers (This is an absolute number not a ratio). recommend: -1', 'value', '-1', null, "Jobs");
 
-    createSetting('speedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
+    createSetting('SpeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
 
     //Line 2
     createSetting('MaxTrainers', 'Max Trainers', 'Advanced. Cap your trainers (This is an absolute number not a ratio). recommend: -1', 'value', '-1', null, "Jobs");
@@ -469,7 +469,7 @@ function initializeAllSettings() {
     createSetting('AutoMeteorologist', 'Auto Meteorologists', 'Auto buy Meteorologists. This value is the percent of food you want to spend on them. 100 would hire as soon as you can afford to. 1 would hire at 1% of your food. -1 or 0 to disable. ', 'value', -1, null, 'Jobs');
     createSetting('AutoMeteorologistz', 'Meteorologists Zone', 'What zone to stop buying Meteorologists at. I.e if set to 70 it will not buy any Meteorologists from z70 onwards. Use 0 or -1 to disable this check. ', 'value', -1, null, 'Jobs');
 
-    createSetting('RspeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
+    createSetting('RSpeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
     
     //Gear
 
@@ -1471,6 +1471,7 @@ function updateCustomButtons() {
     (!radonon && !fuckjobbies) ? turnOn("MaxScientists") : turnOff("MaxScientists");
     (!radonon && !fuckjobbies) ? turnOn("MaxExplorers") : turnOff("MaxExplorers");
     (!radonon && !fuckjobbies) ? turnOn("MaxTrainers") : turnOff("MaxTrainers");
+    (!radonon && !fuckjobbies) ? turnOn("SpeedRessources") : turnOff("SpeedRessources");
 
     
     //RJobs
@@ -1482,6 +1483,7 @@ function updateCustomButtons() {
     radonon ? turnOn("RMaxExplorers") : turnOff("RMaxExplorers");
     radonon ? turnOn("AutoMeteorologist") : turnOff("AutoMeteorologist");
     (radonon && getPageSetting("AutoMeteorologist") > 0) ? turnOn("AutoMeteorologistz") : turnOff("AutoMeteorologistz");
+    (!radonon && !fuckjobbies) ? turnOn("RSpeedRessources") : turnOff("RSpeedRessources");
 
 
 
