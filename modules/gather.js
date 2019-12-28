@@ -9,6 +9,7 @@ MODULES["gather"].minScienceSeconds = 60;
 function manualLabor2() {
     if (getPageSetting('ManualGather2')==0) return;
     //vars
+    var breadingSpeed = game.resources.trimpsTimeToFill
     var breedingTrimps = game.resources.trimps.owned - game.resources.trimps.employed;
     var lowOnTraps = game.buildings.Trap.owned < 5;
     var notFullPop = game.resources.trimps.owned < game.resources.trimps.realMax();
@@ -27,7 +28,7 @@ function manualLabor2() {
         }
     }
 
-    console.log(trapTrimpsOK, breedingTrimps, trapperTrapUntilFull, game.global.challengeActive, game.buildings.Trap.owned)
+    console.log(game.resources.trimps.maxSoldiers, game.resources.trimps.soldiers)
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
         if(!safeBuyBuilding('Trap'))
@@ -59,15 +60,6 @@ function manualLabor2() {
             setGather('science');
         }
     }
-    // else if (trapTrimpsOK){
-    //     //combined to optimize code.
-    //     if (game.buildings.Trap.owned < 5 && canAffordBuilding('Trap')) {
-    //         safeBuyBuilding('Trap');
-    //         setGather('buildings');
-    //     }
-    //     else if (game.buildings.Trap.owned > 0)
-    //         setGather('trimps');
-    // }
     else {
         var manualResourceList = {
             'food': 'Farmer',
