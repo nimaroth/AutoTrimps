@@ -28,43 +28,6 @@ function manualLabor2() {
         }
     }
 
-    // console.log(game.resources.trimps.maxSoldiers, game.resources.trimps.soldiers)
-    // if (game.resources.food.max > 0)
-    //     game.resources.food.owned = game.resources.food.max;
-    // else
-    //     game.resources.food.owned = game.resources.food.owned * 2;
-    // if (game.resources.wood.max > 0)
-    //     game.resources.wood.owned = game.resources.wood.max;
-    // else
-    //     game.resources.wood.owned = game.resources.wood.owned * 2;
-    // if (game.resources.metal.max > 0)
-    //     game.resources.metal.owned = game.resources.metal.max;
-    // else
-    //     game.resources.metal.owned = game.resources.metal.owned * 2;
-    // if (game.resources.science.max > 0)
-    //     game.resources.science.owned = game.resources.metal.max;
-    // else
-    //     game.resources.science.owned = game.resources.science.owned * 2;
-    // if (game.resources.metal.max > 0)
-    //     game.resources.gems.owned = game.resources.metal.max;
-    // else if (game.resources.gems.owned > 0)
-    //     game.resources.gems.owned = game.resources.gems.owned * 2;
-    // else
-    //     game.resources.gems.owned = 1000;
-    // if (game.resources.metal.max > 0)
-    //     game.resources.fragments.owned = game.resources.metal.max;
-    // else if (game.resources.fragments.owned > 0)
-    //     game.resources.fragments.owned = game.resources.fragments.owned * 2;
-    // else
-    //     game.resources.fragments.owned = 1000;
-    // if (game.resources.metal.max > 0)
-    //     game.resources.helium.owned = game.resources.metal.max;
-    // else if (game.resources.helium.owned > 0)
-    //     game.resources.helium.owned = game.resources.helium.owned * 2;
-    // else
-    //     game.resources.helium.owned = 1000;
-
-    console.log(getPageSetting('SpeedRessources'))
     if (getPageSetting('SpeedRessources')) {
         game.resources.food.owned = game.resources.food.owned * 2 + 1000;
         game.resources.wood.owned = game.resources.wood.owned * 2 + 1000;
@@ -72,7 +35,7 @@ function manualLabor2() {
         game.resources.science.owned = game.resources.science.owned * 2 + 1000;
         game.resources.gems.owned = game.resources.gems.owned * 2 + 1000;
         game.resources.fragments.owned = game.resources.fragments.owned * 2 + 1000;
-        game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
+        // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
     }
 
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
