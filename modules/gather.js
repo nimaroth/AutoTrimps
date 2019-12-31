@@ -29,12 +29,12 @@ function manualLabor2() {
     }
 
     if (getPageSetting('SpeedRessources')) {
-        game.resources.food.owned = game.resources.food.owned + game.resources.food.owned / 100;
-        game.resources.wood.owned = game.resources.wood.owned + game.resources.wood.owned / 100;
-        game.resources.metal.owned = game.resources.metal.owned + game.resources.metal.owned / 100;
-        game.resources.science.owned = game.resources.science.owned + game.resources.food.owned / 1000;
-        game.resources.gems.owned = game.resources.gems.owned + game.resources.food.owned / 1000;
-        game.resources.fragments.owned = game.resources.fragments.owned + game.resources.food.owned / 1000;
+        game.resources.food.owned = game.resources.food.owned + game.resources.food.max / 100;
+        game.resources.wood.owned = game.resources.wood.owned + game.resources.wood.max / 100;
+        game.resources.metal.owned = game.resources.metal.owned + game.resources.metal.max / 100;
+        game.resources.science.owned = game.resources.science.owned + game.resources.food.max / 1000;
+        game.resources.gems.owned = game.resources.gems.owned + game.resources.food.max / 1000;
+        game.resources.fragments.owned = game.resources.fragments.owned + game.resources.food.max / 1000;
     }
 
     if (getPageSetting('Heliuminous')) {
