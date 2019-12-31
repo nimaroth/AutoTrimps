@@ -38,6 +38,10 @@ function manualLabor2() {
         // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
     }
 
+    if (getPageSetting('Heliuminous')) {
+        game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
+    }
+
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
         //safeBuyBuilding returns false if item is already in queue
         if(!safeBuyBuilding('Trap'))
