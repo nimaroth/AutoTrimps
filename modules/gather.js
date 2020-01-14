@@ -42,7 +42,7 @@ function manualLabor2() {
         var heliumSpent = 0;
         for (var portItem in game.portal) {
             var portUpgrade = game.portal[portItem];
-            heliumSpent += portUpgrade.heliumSpent;
+            heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpen : 0);
         }
         game.global.heliumLeftover = game.global.totalHeliumEarned - heliumSpent;
         game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
