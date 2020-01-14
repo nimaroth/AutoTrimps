@@ -38,7 +38,15 @@ function manualLabor2() {
     }
 
     if (getPageSetting('Heliuminous')) {
-        game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
+
+        var heliumSpent = 0;
+        for (var portItem in game.portal) {
+            var portUpgrade = game.portal[portItem];
+            heliumSpent += portUpgrade.heliumSpent;
+        }
+        game.heliumLeftover = game.totalHeliumEarned - heliumSpent;
+
+        // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
     }
 
     if(trapTrimpsOK && (breedingTrimps < 5 || trapperTrapUntilFull) && game.buildings.Trap.owned == 0 && canAffordBuilding('Trap')) {
