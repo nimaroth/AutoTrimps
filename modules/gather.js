@@ -44,7 +44,8 @@ function manualLabor2() {
             var portUpgrade = game.portal[portItem];
             heliumSpent += portUpgrade.heliumSpent;
         }
-        game.heliumLeftover = game.totalHeliumEarned - heliumSpent;
+        game.resources.helium.respecMax = game.totalHeliumEarned - heliumSpent;
+        // game.heliumLeftover = game.totalHeliumEarned - heliumSpent;
 
         // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
     }
