@@ -5,6 +5,8 @@ MODULES["gather"].minTraps = 5;
 MODULES["gather"].minScienceAmount = 100;
 MODULES["gather"].minScienceSeconds = 60;
 
+addedBones = false;
+
 //OLD: "Auto Gather/Build"
 function manualLabor2() {
     if (getPageSetting('ManualGather2')==0) return;
@@ -48,7 +50,10 @@ function manualLabor2() {
         game.global.bestHelium = game.global.heliumLeftover / 10;
         game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
         game.achievements.heliumHour.finished = 8;
-        // game.heliumLeftover = game.totalHeliumEarned - heliumSpent;
+        if (!addedBones) {
+            addedBones = true;
+            game.global.b = game.global.b + 500;
+        }
 
         // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
     }
