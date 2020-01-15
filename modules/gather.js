@@ -45,7 +45,9 @@ function manualLabor2() {
             heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpen : 0);
         }
         game.global.heliumLeftover = game.global.totalHeliumEarned - heliumSpent;
+        game.global.bestHelium = game.global.heliumLeftover / 10;
         game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
+        game.achievements.heliumHour.finished = 8;
         // game.heliumLeftover = game.totalHeliumEarned - heliumSpent;
 
         // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
