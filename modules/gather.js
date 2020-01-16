@@ -44,10 +44,10 @@ function manualLabor2() {
         var heliumSpent = 0;
         for (var portItem in game.portal) {
             var portUpgrade = game.portal[portItem];
-            heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpen : 0);
+            heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpent : 0);
         }
         game.global.heliumLeftover = game.global.totalHeliumEarned - heliumSpent;
-        game.global.bestHelium = game.global.heliumLeftover / 10;
+        game.global.bestHelium = game.global.totalHeliumEarned / 10;
         game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
         game.achievements.heliumHour.finished = 8;
         if (!addedBones) {
