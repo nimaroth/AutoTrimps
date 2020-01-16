@@ -52,7 +52,7 @@ function manualLabor2() {
         game.achievements.heliumHour.finished = 8;
         if (!addedBones) {
             addedBones = true;
-            game.global.b = game.global.b + 500;
+            game.global.b += 500;
         }
 
         // game.resources.helium.owned = game.resources.helium.owned * 2 + 1000;
