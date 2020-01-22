@@ -41,15 +41,15 @@ function manualLabor2() {
 
     if (getPageSetting('Heliuminous')) {
 
-        var heliumSpent = 0;
-        for (var portItem in game.portal) {
-            var portUpgrade = game.portal[portItem];
-            heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpent : 0);
-        }
-        game.global.heliumLeftover = game.global.totalHeliumEarned - heliumSpent;
-        game.global.bestHelium = game.global.totalHeliumEarned / 10;
-        game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
-        game.achievements.heliumHour.finished = 8;
+        // var heliumSpent = 0;
+        // for (var portItem in game.portal) {
+        //     var portUpgrade = game.portal[portItem];
+        //     heliumSpent += (portUpgrade.heliumSpent ? portUpgrade.heliumSpent : 0);
+        // }
+        // game.global.heliumLeftover = game.global.totalHeliumEarned - heliumSpent;
+        // game.global.bestHelium = game.global.totalHeliumEarned / 10;
+        // game.resources.helium.respecMax = game.global.totalHeliumEarned - heliumSpent;
+        // game.achievements.heliumHour.finished = 8;
         if (!addedBones) {
             addedBones = true;
             game.global.b += 500;
