@@ -452,7 +452,7 @@ function initializeAllSettings() {
     createSetting('MaxExplorers', 'Max Explorers', 'Advanced. Cap your explorers (This is an absolute number not a ratio). recommend: -1', 'value', '-1', null, "Jobs");
 
     createSetting('SpeedRessources', 'Speed Ressources', '', 'boolean', false, null, "Jobs");
-    // createSetting('Heliuminous', 'Heliuminous', '', 'boolean', false, null, "Jobs");
+    createSetting('Heliuminous', 'Heliuminous', '', 'boolean', false, null, "Jobs");
 
     //Line 2
     createSetting('MaxTrainers', 'Max Trainers', 'Advanced. Cap your trainers (This is an absolute number not a ratio). recommend: -1', 'value', '-1', null, "Jobs");
@@ -1484,7 +1484,7 @@ function updateCustomButtons() {
     radonon ? turnOn("AutoMeteorologist") : turnOff("AutoMeteorologist");
     (radonon && getPageSetting("AutoMeteorologist") > 0) ? turnOn("AutoMeteorologistz") : turnOff("AutoMeteorologistz");
     turnOn("SpeedRessources");
-    // turnOn("Heliuminous");
+    turnOn("Heliuminous");
 
 
 
