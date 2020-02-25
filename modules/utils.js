@@ -100,6 +100,27 @@ var lastmessagecount = 1;
 function message2(a,b,c,d){var e=document.getElementById("log"),f=e.scrollTop+10>e.scrollHeight-e.clientHeight,g=ATmessageLogTabVisible?"block":"none",h="";c&&"*"==c.charAt(0)?(c=c.replace("*",""),h="icomoon icon-"):h="glyphicon glyphicon-",game.options.menu.timestamps.enabled&&(a=(1==game.options.menu.timestamps.enabled?getCurrentTime():updatePortalTimer(!0))+" "+a),c&&(a="<span class=\""+h+c+"\"></span> "+a),a="<span class=\"glyphicon glyphicon-superscript\"></span> "+a,a="<span class=\"icomoon icon-text-color\"></span>"+a;var i="<span class='"+b+"Message message "+d+"' style='display: "+g+"'>"+a+"</span>",j=document.getElementsByClassName(b+"Message");if(1<j.length&&-1<j[j.length-1].innerHTML.indexOf(a)){var k=j[j.length-1].innerHTML;lastmessagecount++;var l=k.lastIndexOf(" x");-1!=l&&(j[j.length-1].innerHTML=k.slice(0,l)),j[j.length-1].innerHTML+=" x"+lastmessagecount}else lastmessagecount=1,e.innerHTML+=i;f&&(e.scrollTop=e.scrollHeight),trimMessages(b)}
 var ATbutton=document.createElement('button');ATbutton.innerHTML='AutoTrimps',ATbutton.setAttribute('id','AutoTrimpsFilter'),ATbutton.setAttribute('type','button'),ATbutton.setAttribute('onclick','filterMessage2(\'AutoTrimps\')'),ATbutton.setAttribute('class','btn btn-success logFlt');var tab=document.createElement('DIV');tab.setAttribute('class','btn-group'),tab.setAttribute('role','group'),tab.appendChild(ATbutton),document.getElementById('logBtnGroup').appendChild(tab);
 function filterMessage2(a){var b=document.getElementById("log");displayed=!ATmessageLogTabVisible,ATmessageLogTabVisible=displayed;var c=document.getElementsByClassName(a+"Message"),d=displayed?a:a+" off",e=document.getElementById(a+"Filter");e.innerHTML=d,e.className="",e.className=getTabClass(displayed),displayed=displayed?"block":"none";for(var f=0;f<c.length;f++)c[f].style.display=displayed;b.scrollTop=b.scrollHeight}
-function formatMinutesForDescriptions(a){var b,c=Math.floor(60*a%60),d=Math.floor(a%60),e=Math.floor(a/60);if(0==e)b=d+" minutes "+c+" seconds";else if(0<d)10>d&&(d="0"+d),10>c&&(c="0"+c),b=e+":"+d+":"+c;else{var f=1<e?"s":"",g=1<d?"s":"",h=1<c?"s":"";b=e+" hour"+f+" "+d+" minute"+g+" "+c+" second"+h}return b}
+
+function formatMinutesForDescriptions(number){
+    var text;
+    var seconds = Math.floor((number*60) % 60);
+    var minutes = Math.floor(number % 60);
+    var hours = Math.floor(number / 60);
+    if (hours == 0)
+        text = minutes + " minutes " + seconds + " seconds";
+    else if (minutes > 0) {
+        if (minutes < 10) minutes = "0" + minutes;
+        if (seconds < 10) seconds = "0" + seconds;
+        text = hours + ":" + minutes + ":" + seconds;
+    }
+    else {
+        var hs = (hours > 1) ? "s" : "";
+        var ms = (minutes > 1) ? "s" : "";
+        var ss = (seconds > 1) ? "s" : "";
+        text = hours + " hour" + hs + " " + minutes + " minute" + ms + " " + seconds + " second" + ss;
+    }
+    return text;
+}
+
 window.onerror=function(b,c,d,e,f){var g=['Message: '+b,'URL: '+c,'Line: '+d,'Column: '+e,'Error object: '+JSON.stringify(f)].join(' - ');0!=d&&console.log('AT logged error: '+g)};
 function throwErrorfromModule(){throw new Error("We have successfully read the thrown error message out of a module")}

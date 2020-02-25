@@ -1,7 +1,7 @@
 MODULES["other"] = {};
 MODULES["other"].enableRoboTrimpSpam = true;
 var prestraid=!1,dprestraid=!1,failpraid=!1,dfailpraid=!1,bwraided=!1,dbwraided=!1,failbwraid=!1,dfailbwraid=!1,perked=!1,prestraidon=!1,dprestraidon=!1,mapbought=!1,dmapbought=!1,bwraidon=!1,dbwraidon=!1,presteps=null,minMaxMapCost,fMap,pMap,shouldFarmFrags=!1,praidDone=!1;
-function armydeath(){if(game.global.mapsActive)return!1;var e=game.global.lastClearedCell+1,l=game.global.gridArray[e].attack*dailyModifiers.empower.getMult(game.global.dailyChallenge.empower.strength,game.global.dailyChallenge.empower.stacks),a=game.global.soldierHealth;"Ice"==getEmpowerment()&&(l*=game.empowerments.Ice.getCombatModifier());var g=game.global.soldierCurrentBlock;return 3==game.global.formation?g/=4:"0"!=game.global.formation&&(g*=2),g>game.global.gridArray[e].attack?l*=getPierceAmt():l-=g*(1-getPierceAmt()),"Daily"==game.global.challengeActive&&void 0!==game.global.dailyChallenge.crits&&(l*=dailyModifiers.crits.getMult(game.global.dailyChallenge.crits.strength)),void 0!==game.global.dailyChallenge.bogged&&(a-=game.global.soldierHealthMax*dailyModifiers.bogged.getMult(game.global.dailyChallenge.bogged.strength)),void 0!==game.global.dailyChallenge.plague&&(a-=game.global.soldierHealthMax*dailyModifiers.plague.getMult(game.global.dailyChallenge.plague.strength,game.global.dailyChallenge.plague.stacks)),"Electricity"==game.global.challengeActive&&(a-=game.global.soldierHealth-=game.global.soldierHealthMax*(.1*game.challenges.Electricity.stacks)),"corruptCrit"==game.global.gridArray[e].corrupted?l*=5:"healthyCrit"==game.global.gridArray[e].corrupted?l*=7:"corruptBleed"==game.global.gridArray[e].corrupted?a*=.8:"healthyBleed"==game.global.gridArray[e].corrupted&&(a*=.7),(a-=l)<=1e3}
+function armydeath(){if(game.global.mapsActive)return!1;var e=game.global.lastClearedCell+1,l=game.global.gridArray[e].attack*dailyModifiers.empower.getMult(game.global.dailyChallenge.empower.strength,game.global.dailyChallenge.empower.stacks),a=game.global.soldierHealth+game.global.soldierEnergyShield;"Ice"==getEmpowerment()&&(l*=game.empowerments.Ice.getCombatModifier());var g=game.global.soldierCurrentBlock;return 3==game.global.formation?g/=4:"0"!=game.global.formation&&(g*=2),g>game.global.gridArray[e].attack?l*=getPierceAmt():l-=g*(1-getPierceAmt()),"Daily"==game.global.challengeActive&&void 0!==game.global.dailyChallenge.crits&&(l*=dailyModifiers.crits.getMult(game.global.dailyChallenge.crits.strength)),void 0!==game.global.dailyChallenge.bogged&&(a-=game.global.soldierHealthMax*dailyModifiers.bogged.getMult(game.global.dailyChallenge.bogged.strength)),void 0!==game.global.dailyChallenge.plague&&(a-=game.global.soldierHealthMax*dailyModifiers.plague.getMult(game.global.dailyChallenge.plague.strength,game.global.dailyChallenge.plague.stacks)),"Electricity"==game.global.challengeActive&&(a-=game.global.soldierHealth-=game.global.soldierHealthMax*(.1*game.challenges.Electricity.stacks)),"corruptCrit"==game.global.gridArray[e].corrupted?l*=5:"healthyCrit"==game.global.gridArray[e].corrupted?l*=7:"corruptBleed"==game.global.gridArray[e].corrupted?a*=.8:"healthyBleed"==game.global.gridArray[e].corrupted&&(a*=.7),(a-=l)<=1e3}
 function autoRoboTrimp(){if(!(0<game.global.roboTrimpCooldown)&&game.global.roboTrimpLevel){var a=parseInt(getPageSetting("AutoRoboTrimp"));0==a||game.global.world>=a&&!game.global.useShriek&&(magnetoShriek(),MODULES.other.enableRoboTrimpSpam&&debug("Activated Robotrimp MagnetoShriek Ability @ z"+game.global.world,"graphs","*podcast"))}}
 function isBelowThreshold(a){return a!=game.global.world}
 function buyWeps(){if(!((getPageSetting('BuyWeaponsNew')==1)||(getPageSetting('BuyWeaponsNew')==3)))return;preBuy(),game.global.buyAmt=getPageSetting('gearamounttobuy'),game.equipment.Dagger.level<getPageSetting('CapEquip2')&&canAffordBuilding('Dagger',null,null,!0)&&buyEquipment('Dagger',!0,!0),game.equipment.Mace.level<getPageSetting('CapEquip2')&&canAffordBuilding('Mace',null,null,!0)&&buyEquipment('Mace',!0,!0),game.equipment.Polearm.level<getPageSetting('CapEquip2')&&canAffordBuilding('Polearm',null,null,!0)&&buyEquipment('Polearm',!0,!0),game.equipment.Battleaxe.level<getPageSetting('CapEquip2')&&canAffordBuilding('Battleaxe',null,null,!0)&&buyEquipment('Battleaxe',!0,!0),game.equipment.Greatsword.level<getPageSetting('CapEquip2')&&canAffordBuilding('Greatsword',null,null,!0)&&buyEquipment('Greatsword',!0,!0),!game.equipment.Arbalest.locked&&game.equipment.Arbalest.level<getPageSetting('CapEquip2')&&canAffordBuilding('Arbalest',null,null,!0)&&buyEquipment('Arbalest',!0,!0),postBuy()}
@@ -1919,6 +1919,9 @@ function RautoGoldenUpgradesAT(setting) {
 	setting2 = "Helium";
     if (setting == "Void" || setting == "Void + Battle")
         setting2 = "Void";
+    if (game.global.challengeActive == "Mayhem") {
+	setting2 = "Battle";
+    }
     var success = buyGoldenUpgrade(setting2);
     if (!success && setting2 == "Void") {
         num = getAvailableGoldenUpgrades();
@@ -2438,41 +2441,43 @@ function Rarmormagic() {
 
 function questcheck() {
 	if (game.global.world < 6) {
-	    return;
+	    return 0;
 	}
 	//x5 resource
-	if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 10;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your wood" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your wood" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 11;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your metal" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your metal" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 12;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your gems" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your gems" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 13;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your science" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your science" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 14;
 	//x2 resource
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 20;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Double your wood" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 21;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Double your metal" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 22;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Double your gems" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 23;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Double your science" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 24;
 	//Everything else
-	else if (game.challenges.Quest.getQuestDescription() == "Complete 5 Maps at Zone level" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Complete 5 Maps at Zone level" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 3;
-	else if (game.challenges.Quest.getQuestDescription() == "One-shot 5 world enemies" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "One-shot 5 world enemies (Overkill is disabled in World until complete)" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 4;
-	else if (game.challenges.Quest.getQuestDescription() == "Don't let your shield break before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Don't let your shield break before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 5;
-	else if (game.challenges.Quest.getQuestDescription() == "Don't run a map before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Don't run a map before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 6;
-	else if (game.challenges.Quest.getQuestDescription() == "Buy a Smithy" && game.challenges.Quest.getQuestProgress() != "Quest Complete!")
+	else if (game.challenges.Quest.getQuestDescription() == "Buy a Smithy" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
 		return 7;
+	else
+		return 0;
 }
 
 function Rgetequipcost(equip, resource, amt) { 
@@ -2586,5 +2591,23 @@ function smithylogic(name, resource, equip) {
 	else if (smithyclosegems && itemgems <= smithypercentgems && (name == "Mansion" || name == "Hotel" || name == "Resort" || name == "Gateway" || name == "Collector")) { 
 	    go = true;
 	    return go;
+	}
+}
+
+function archstring() {
+	if (getPageSetting('Rarchon') == false) return;
+	if (getPageSetting('Rarchstring1') != "undefined" && getPageSetting('Rarchstring2') != "undefined" && getPageSetting('Rarchstring3') != "undefined") {
+	    var string1 = getPageSetting('Rarchstring1'), string2 = getPageSetting('Rarchstring2'), string3 = getPageSetting('Rarchstring3');
+	    var string1z = string1.split(',')[0], string2z = string2.split(',')[0];
+	    var string1split = string1.split(',').slice(1).toString(), string2split = string2.split(',').slice(1).toString();
+	    if (game.global.world <= string1z && game.global.archString != string1split) {
+		game.global.archString = string1split;
+	    }
+	    if (game.global.world > string1z && game.global.world <= string2z && game.global.archString != string2split) {
+		game.global.archString = string2split;
+	    }
+	    if (game.global.world > string2z && game.global.archString != string3) {
+		game.global.archString = string3;
+	    }
 	}
 }

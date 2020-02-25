@@ -22,7 +22,7 @@ function safeBuyBuilding(building) {
             game.global.buyAmt = 1;
      }
   }
-  else if (game.talents.doubleBuild.purchased) {
+  else if (bwRewardUnlocked("DoubleBuild")) {
         game.global.buyAmt = 2;
   	if (!canAffordBuilding(building)) 
         game.global.buyAmt = 1;
@@ -255,7 +255,7 @@ function RsafeBuyBuilding(building) {
             game.global.buyAmt = 1;
      }
   }
-  else if (game.talents.doubleBuild.purchased) {
+  else if (bwRewardUnlocked("DoubleBuild")) {
         game.global.buyAmt = 2;
   	if (!canAffordBuilding(building)) 
         game.global.buyAmt = 1;
@@ -347,6 +347,8 @@ function RbuyGemEfficientHousing() {
     }
 }
 
+var smithybought = 0;
+
 function RbuyBuildings() {
 
     var oldBuy = preBuy2();
@@ -356,13 +358,20 @@ function RbuyBuildings() {
     if (!game.buildings.Smithy.locked && canAffordBuilding('Smithy') && game.global.challengeActive != "Quest") {
         RsafeBuyBuilding('Smithy');
     }
-    if (!game.buildings.Smithy.locked && canAffordBuilding('Smithy') && game.global.challengeActive == "Quest" && ((questcheck() == 7) || (RcalcHDratio() * 10 >= getPageSetting('Rmapcuntoff')))) {
-        RsafeBuyBuilding('Smithy');
-    }	
+    if (smithybought <= 0 && !game.buildings.Smithy.locked && canAffordBuilding('Smithy') && game.global.challengeActive == "Quest" && ((questcheck() == 7) || (RcalcHDratio() * 10 >= getPageSetting('Rmapcuntoff')))) {
+	buyBuilding("Smithy", true, true, 1);
+	smithybought = game.global.world;
+    }
+    if (smithybought > 0 && game.global.world > smithybought && game.global.challengeActive == "Quest") {
+	smithybought = 0;
+    }
+	
+    //Micro
     if (!game.buildings.Microchip.locked && canAffordBuilding('Microchip')) {
         RsafeBuyBuilding('Microchip');
     }
-	
+
+    //Housing
     RbuyFoodEfficientHousing();
     RbuyGemEfficientHousing();
 
