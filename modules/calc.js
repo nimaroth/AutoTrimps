@@ -43,7 +43,7 @@ function calcOurHealth(stance) {
     }
     health *= game.resources.trimps.maxSoldiers;
     if (game.goldenUpgrades.Battle.currentBonus > 0) {
-        health *= game.goldenUpgrades.Battle.currentBonus;
+        health *= game.goldenUpgrades.Battle.currentBonus + 1;
     }
     if (game.portal.Toughness.level > 0) {
         health *= ((game.portal.Toughness.level * game.portal.Toughness.modifier) + 1);
@@ -185,7 +185,9 @@ function calcOurDmg(minMaxAvg, incStance, incFlucts) {
 		number *= ((45 * game.portal.Anticipation.level * game.portal.Anticipation.modifier) + 1);
 	}
 	if (game.global.mapBonus > 0){
-		number *= ((game.global.mapBonus * .2) + 1);
+	    var mapBonus = game.global.mapBonus;
+            if (game.talents.mapBattery.purchased && mapBonus == 10) mapBonus *= 2;
+		number *= ((mapBonus * .2) + 1);
 	}
 	if (game.global.achievementBonus > 0){
 		number *= (1 + (game.global.achievementBonus / 100));
@@ -237,6 +239,9 @@ function calcOurDmg(minMaxAvg, incStance, incFlucts) {
 	}
 	if (game.talents.healthStrength.purchased && mutations.Healthy.active()) {
 		number *= ((0.15 * mutations.Healthy.cellCount()) + 1);
+	}
+	if (game.talents.herbalist.purchased) {
+	        number *= game.talents.herbalist.getBonus();
 	}
 	if (game.global.sugarRush > 0) {
 		number *= sugarRush.getAttackStrength();
@@ -682,11 +687,16 @@ function RcalcOurDmg(minMaxAvg, incStance, incFlucts) {
 		number += (number * game.portal.Power.radLevel * game.portal.Power.modifier);
 	}
 	if (game.global.mapBonus > 0){
-		number *= ((game.global.mapBonus * .2) + 1);
+	    var mapBonus = game.global.mapBonus;
+            if (game.talents.mapBattery.purchased && mapBonus == 10) mapBonus *= 2;
+		number *= ((mapBonus * .2) + 1);
 	}
-	if (game.portal.Equality.radLevel > 0) {
-                number *= game.portal.Equality.getMult();
-    	}
+        if (game.portal.Equality.radLevel > 0 && getPageSetting('Rcalcmaxequality') != 1) {
+            number *= game.portal.Equality.getMult();
+        }
+        else if (game.portal.Equality.radLevel > 0 && getPageSetting('Rcalcmaxequality') == 1 && game.portal.Equality.getActiveLevels() < game.portal.Equality.radLevel) {
+            number *= Math.pow(game.portal.Equality.modifier, game.portal.Equality.radLevel);
+        }
 	if (game.portal.Tenacity.radLevel > 0) {
 		number *= game.portal.Tenacity.getMult();
 	}
@@ -718,6 +728,9 @@ function RcalcOurDmg(minMaxAvg, incStance, incFlucts) {
 	if (game.global.sugarRush > 0) {
 		number *= sugarRush.getAttackStrength();
 	}
+	if (game.talents.herbalist.purchased) {
+	        number *= game.talents.herbalist.getBonus();
+	}
 	if (game.global.challengeActive == "Melt") {
 		number *= 5;
 		number *= Math.pow(0.99, game.challenges.Melt.stacks);
@@ -733,6 +746,12 @@ function RcalcOurDmg(minMaxAvg, incStance, incFlucts) {
 	}
 	if (game.global.challengeActive == "Revenge" && game.challenges.Revenge.stacks > 0) {
 		number *= game.challenges.Revenge.getMult();
+	}
+	if (game.global.challengeActive == "Archaeology") {
+		number *= game.challenges.Archaeology.getStatMult("attack");
+	}
+	if (game.global.mayhemCompletions > 0) {
+		number *= game.challenges.Mayhem.getTrimpMult();
 	}
 	if (getHeirloomBonus("Shield", "gammaBurst") > 0 && (RcalcOurHealth() / (RcalcBadGuyDmg(null, RgetEnemyMaxAttack(game.global.world, 50, 'Snimp', 1.0))) >= 5)) {
 	    	number *= ((getHeirloomBonus("Shield", "gammaBurst") / 100) + 1) / 5;
@@ -800,7 +819,7 @@ function RcalcOurHealth() {
     }
     health *= game.resources.trimps.maxSoldiers;
     if (game.buildings.Smithy.owned > 0) {
-	health *= Math.pow(1.25, game.buildings.Smithy.owned);
+		health *= Math.pow(1.25, game.buildings.Smithy.owned);
     }
     if (game.portal.Toughness.radLevel > 0) {
         health *= ((game.portal.Toughness.radLevel * game.portal.Toughness.modifier) + 1);
@@ -809,7 +828,7 @@ function RcalcOurHealth() {
         health *= (Math.pow(game.portal.Resilience.modifier + 1, game.portal.Resilience.radLevel));
     }
     if (Fluffy.isRewardActive("healthy")) {
-	health *= 1.5;
+		health *= 1.5;
     }
     health = calcHeirloomBonus("Shield", "trimpHealth", health);
     if (game.goldenUpgrades.Battle.currentBonus > 0) {
@@ -823,6 +842,9 @@ function RcalcOurHealth() {
     }
     if (game.global.challengeActive == "Wither" && game.challenges.Wither.trimpStacks > 0) {
 	health *= game.challenges.Wither.getTrimpHealthMult();
+    }
+    if (game.global.mayhemCompletions > 0) {
+	health *= game.challenges.Mayhem.getTrimpMult();
     }
     if (typeof game.global.dailyChallenge.pressure !== 'undefined') {
         health *= (dailyModifiers.pressure.getMult(game.global.dailyChallenge.pressure.strength, game.global.dailyChallenge.pressure.stacks));
@@ -856,8 +878,11 @@ function RcalcBadGuyDmg(enemy,attack) {
         number = enemy.attack;
     else
         number = attack;
-    if (game.portal.Equality.radLevel > 0) {
+    if (game.portal.Equality.radLevel > 0 && getPageSetting('Rcalcmaxequality') == 0) {
         number *= game.portal.Equality.getMult();
+    }
+    else if (game.portal.Equality.radLevel > 0 && getPageSetting('Rcalcmaxequality') >= 1 && game.portal.Equality.getActiveLevels() < game.portal.Equality.radLevel) {
+        number *= Math.pow(game.portal.Equality.modifier, game.portal.Equality.radLevel);
     }
     if (game.global.challengeActive == "Daily") {
         number = RcalcDailyAttackMod(number);
@@ -867,6 +892,13 @@ function RcalcBadGuyDmg(enemy,attack) {
     }
     if (game.global.challengeActive == "Wither" && game.challenges.Wither.enemyStacks > 0) {
 	number *= game.challenges.Wither.getEnemyAttackMult();
+    }
+    if (game.global.challengeActive == "Archaeology") {
+	number *= game.challenges.Archaeology.getStatMult("enemyAttack");
+    }
+    if (game.global.challengeActive == "Mayhem") {
+	number *= game.challenges.Mayhem.getEnemyMult();
+	number *= game.challenges.Mayhem.getBossMult();
     }
     if (!enemy && game.global.usingShriek) {
         number *= game.mapUnlocks.roboTrimp.getShriekValue();
@@ -912,6 +944,13 @@ function RcalcEnemyHealth() {
     }
     if (game.global.challengeActive == "Revenge" && game.global.world % 2 == 0) {
 	health *= 10;
+    }
+    if (game.global.challengeActive == "Archaeology") {
+	
+    }
+    if (game.global.challengeActive == "Mayhem") {
+	health *= game.challenges.Mayhem.getEnemyMult();
+	health *= game.challenges.Mayhem.getBossMult();
     }
     return health;
 }

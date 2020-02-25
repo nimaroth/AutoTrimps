@@ -9,28 +9,28 @@ function dlowdmgshield(){for(loom of game.global.heirloomsCarried)if(loom.name==
 
 function getHeirloomEff(name, type) {
   if (type == "staff") {
-    if (getPageSetting('slot1modst') == name) return 6;
+    if (getPageSetting('slot1modst') == name) return 5;
     else if (getPageSetting('slot2modst') == name) return 5;
-    else if (getPageSetting('slot3modst') == name) return 4;
-    else if (getPageSetting('slot4modst') == name) return 3;
-    else if (getPageSetting('slot5modst') == name) return 2;
-    else if (getPageSetting('slot6modst') == name) return 1;
+    else if (getPageSetting('slot3modst') == name) return 5;
+    else if (getPageSetting('slot4modst') == name) return 5;
+    else if (getPageSetting('slot5modst') == name) return 5;
+    else if (getPageSetting('slot6modst') == name) return 5;
 	else return 0;
   }
   else if (type == "shield") {
-    if (getPageSetting('slot1modsh') == name) return 6;
+    if (getPageSetting('slot1modsh') == name) return 5;
     else if (getPageSetting('slot2modsh') == name) return 5;
-    else if (getPageSetting('slot3modsh') == name) return 4;
-    else if (getPageSetting('slot4modsh') == name) return 3;
-    else if (getPageSetting('slot5modsh') == name) return 2;
-    else if (getPageSetting('slot6modsh') == name) return 1;
+    else if (getPageSetting('slot3modsh') == name) return 5;
+    else if (getPageSetting('slot4modsh') == name) return 5;
+    else if (getPageSetting('slot5modsh') == name) return 5;
+    else if (getPageSetting('slot6modsh') == name) return 5;
 	else return 0;
   }
   else if (type == "core") {
     if (getPageSetting('slot1modcr') == name) return 5;
-    else if (getPageSetting('slot2modcr') == name) return 4;
-    else if (getPageSetting('slot3modcr') == name) return 3;
-    else if (getPageSetting('slot4modcr') == name) return 2;
+    else if (getPageSetting('slot2modcr') == name) return 5;
+    else if (getPageSetting('slot3modcr') == name) return 5;
+    else if (getPageSetting('slot4modcr') == name) return 5;
 	else return 0;
   }
 }
@@ -73,26 +73,13 @@ function evaluateHeirloomMods2(loom, location) {
       eff += getHeirloomEff(name, "core");
     }
     if (name == "empty" && type == "Shield") {
-      if (getPageSetting('slot1modsh') == name) eff *= 4;
-      if (getPageSetting('slot2modsh') == name) eff *= 4;
-      if (getPageSetting('slot3modsh') == name) eff *= 4;
-      if (getPageSetting('slot4modsh') == name) eff *= 4;
-      if (getPageSetting('slot5modsh') == name) eff *= 4;
-      if (getPageSetting('slot6modsh') == name) eff *= 4;
+        eff *= 4;
     }
     if (name == "empty" && type == "Staff") {
-      if (getPageSetting('slot1modst') == name) eff *= 4;
-      if (getPageSetting('slot2modst') == name) eff *= 4;
-      if (getPageSetting('slot3modst') == name) eff *= 4;
-      if (getPageSetting('slot4modst') == name) eff *= 4;
-      if (getPageSetting('slot5modst') == name) eff *= 4;
-      if (getPageSetting('slot6modst') == name) eff *= 4;
+        eff *= 4;
     }
     if (name == "empty" && type == "Core") {
-      if (getPageSetting('slot1modcr') == name) eff *= 4;
-      if (getPageSetting('slot2modcr') == name) eff *= 4;
-      if (getPageSetting('slot3modcr') == name) eff *= 4;
-      if (getPageSetting('slot4modcr') == name) eff *= 4;
+        eff *= 4;
     }
     if (rarity >= raretokeep) {
        eff *= 3;

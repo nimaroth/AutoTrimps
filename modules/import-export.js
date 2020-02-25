@@ -1,12 +1,157 @@
 MODULES["import-export"] = {};
 var $settingsProfiles;
-function settingsProfileMakeGUI(){var a=document.createElement("Label");a.id="settingsProfiles Label",a.innerHTML="Settings Profile: ",2==game.options.menu.darkTheme.enabled?a.setAttribute("style","margin-left: 1.2vw; margin-right: 0.8vw; font-size: 0.8vw;"):a.setAttribute("style","margin-left: 1.2vw; margin-right: 0.8vw; font-size: 0.8vw;"),$settingsProfiles=document.createElement("select"),$settingsProfiles.id="settingsProfiles",$settingsProfiles.setAttribute("class","noselect"),$settingsProfiles.setAttribute("onchange","settingsProfileDropdownHandler()");var b="text-align: center; width: 160px; font-size: 1.0vw;";2==game.options.menu.darkTheme.enabled?$settingsProfiles.setAttribute("style",b):$settingsProfiles.setAttribute("style",b+" color: black;");var c=document.createElement("Button");c.id="settingsProfiles Button",c.setAttribute("class","btn btn-info"),c.innerHTML="&lt;Delete Profile",c.setAttribute("style","margin-left: 0.5vw; margin-right: 0.5vw; font-size: 0.8vw;"),c.setAttribute("onclick","onDeleteProfileHandler()");var d="<option id='customProfileCurrent'>Current</option>";d+="<option id='customProfileDefault'>Reset to Default</option>",d+="<option id='customProfileNew'>Save New...</option>",$settingsProfiles.innerHTML=d;var e=document.getElementById("Import Export");null==e||(e.insertBefore(a,e.childNodes[1]),e.insertBefore($settingsProfiles,e.childNodes[2]),e.insertBefore(c,e.childNodes[3]))}
-function initializeSettingsProfiles(){if(null!=$settingsProfiles){var a=localStorage.getItem('ATSelectedSettingsProfile'),b=a?JSON.parse(a):[];b.forEach(function(c){let d=new Option(c.name);d.id='customProfileRead',$settingsProfiles.add(d)}),$settingsProfiles.selectedIndex=0}}
-function settingsProfileDropdownHandler(){if(null!=$settingsProfiles){var a=$settingsProfiles.selectedIndex,b=$settingsProfiles.options[a].id;if('customProfileCurrent'!=b)return cancelTooltip(),void('customProfileDefault'==b?ImportExportTooltip('ResetDefaultSettingsProfiles'):'customProfileNew'==b?ImportExportTooltip('NameSettingsProfiles'):'customProfileRead'==b&&ImportExportTooltip('ReadSettingsProfiles'))}}
-function confirmedSwitchNow(){if(null!=$settingsProfiles){var a=$settingsProfiles.selectedIndex,b=$settingsProfiles.options[a].text,c=JSON.parse(localStorage.getItem("ATSelectedSettingsProfile"));if(null!=c){var d=c.filter(function(e){return e.name==b});0<d.length&&(resetAutoTrimps(d[0].data,b),debug("Successfully loaded existing profile: "+b,"profile"))}}}
-function nameAndSaveNewProfile(){try{var a=document.getElementById("setSettingsNameTooltip").value.replace(/[\n\r]/gm,"");if(null==a)return void debug("Error in naming, the string is empty.","profile")}catch(g){return void debug("Error in naming, the string is bad."+g.message,"profile")}var b={name:a,data:JSON.parse(serializeSettings())},c=localStorage.getItem("ATSelectedSettingsProfile"),d=c?JSON.parse(c):[];safeSetItems("ATSelectedSettingsProfile",JSON.stringify(d.concat([b]))),debug("Successfully created new profile: "+b.name,"profile"),ImportExportTooltip("message","Successfully created new profile: "+b.name);let f=new Option(b.name);f.id="customProfileRead";null==$settingsProfiles||($settingsProfiles.add(f),$settingsProfiles.selectedIndex=$settingsProfiles.length-1)}
-function onDeleteProfileHandler(){ImportExportTooltip('DeleteSettingsProfiles')}
-function onDeleteProfile(){if(null!=$settingsProfiles){var a=$settingsProfiles.selectedIndex;$settingsProfiles.options.remove(a),$settingsProfiles.selectedIndex=a>$settingsProfiles.length-1?$settingsProfiles.length-1:a;var b=localStorage.getItem('ATSelectedSettingsProfile'),c=b?JSON.parse(b):[],d=a-3;c.splice(d,1),safeSetItems('ATSelectedSettingsProfile',JSON.stringify(c)),debug('Successfully deleted profile #: '+d,'profile')}}
+function settingsProfileMakeGUI() {
+    var $settingsProfilesLabel = document.createElement("Label");
+    $settingsProfilesLabel.id = 'settingsProfiles Label';
+    $settingsProfilesLabel.innerHTML = "Settings Profile: ";
+    if (game.options.menu.darkTheme.enabled == 2) $settingsProfilesLabel.setAttribute("style", "margin-left: 1.2vw; margin-right: 0.8vw; font-size: 0.8vw;");
+    else $settingsProfilesLabel.setAttribute("style", "margin-left: 1.2vw; margin-right: 0.8vw; font-size: 0.8vw;");
+    $settingsProfiles = document.createElement("select");
+    $settingsProfiles.id = 'settingsProfiles';
+    $settingsProfiles.setAttribute('class', 'noselect');
+    $settingsProfiles.setAttribute('onchange', 'settingsProfileDropdownHandler()');
+    var oldstyle = 'text-align: center; width: 160px; font-size: 1.0vw;';
+    if(game.options.menu.darkTheme.enabled != 2) $settingsProfiles.setAttribute("style", oldstyle + " color: black;");
+    else $settingsProfiles.setAttribute('style', oldstyle);
+    //Create settings profile selection dropdown
+    var $settingsProfilesButton = document.createElement("Button");
+    $settingsProfilesButton.id = 'settingsProfiles Button';
+    $settingsProfilesButton.setAttribute('class', 'btn btn-info');
+    $settingsProfilesButton.innerHTML = "&lt;Delete Profile";
+    $settingsProfilesButton.setAttribute('style', 'margin-left: 0.5vw; margin-right: 0.5vw; font-size: 0.8vw;');
+    $settingsProfilesButton.setAttribute('onclick','onDeleteProfileHandler()');
+    //populate with a Default (read default settings):
+    var innerhtml = "<option id='customProfileCurrent'>Current</option>";
+    //populate with a Default (read default settings):
+    innerhtml += "<option id='customProfileDefault'>Reset to Default</option>";
+    //Append a 2nd default item named "Save New..." and have it tied to a write function();
+    innerhtml += "<option id='customProfileNew'>Save New...</option>";
+    //dont forget to populate the rest of it with stored items:
+    $settingsProfiles.innerHTML = innerhtml;    
+    //Add the $settingsProfiles dropdown to UI
+    var $ietab = document.getElementById('Import Export');
+    if ($ietab == null) return;
+    //Any ERRORs here are caused by incorrect order loading of script and you should reload until its gone.(for now)
+    $ietab.insertBefore($settingsProfilesLabel, $ietab.childNodes[1]);
+    $ietab.insertBefore($settingsProfiles, $ietab.childNodes[2]);
+    $ietab.insertBefore($settingsProfilesButton, $ietab.childNodes[3]);
+}   //self-executes at the bottom of the file.
+
+//Populate dropdown menu with list of AT SettingsProfiles
+function initializeSettingsProfiles() {
+    if ($settingsProfiles == null) return;
+    //load the old data in:
+    var loadLastProfiles = localStorage.getItem('ATSelectedSettingsProfile');
+    var oldpresets = loadLastProfiles ? JSON.parse(loadLastProfiles) : new Array(); //load the import.
+    oldpresets.forEach(function(elem){
+        //Populate dropdown menu to reflect new name:
+        let optionElementReference = new Option(elem.name);
+        optionElementReference.id = 'customProfileRead';
+        $settingsProfiles.add(optionElementReference);
+    });
+    $settingsProfiles.selectedIndex = 0;
+}
+
+//This switches into the new profile when the dropdown is selected.
+//it is the "onchange" handler of the settingsProfiles dropdown
+//Asks them do a confirmation check tooltip first. The
+function settingsProfileDropdownHandler() {
+    if ($settingsProfiles == null) return;
+    var index = $settingsProfiles.selectedIndex;
+    var id = $settingsProfiles.options[index].id;
+    //Current: placeholder.
+    if (id == 'customProfileCurrent')
+        return;
+    cancelTooltip();
+//Default: simply calls Reset To Default:
+    if (id == 'customProfileDefault')
+        //calls a tooltip then resetAutoTrimps() below
+        ImportExportTooltip('ResetDefaultSettingsProfiles');
+//Save new...: asks a name and saves new profile
+    else if (id == 'customProfileNew')
+        //calls a tooltip then nameAndSaveNewProfile() below
+        ImportExportTooltip('NameSettingsProfiles');
+//Reads the existing profile name and switches into it.
+    else if (id == 'customProfileRead')
+        //calls a tooltip then confirmedSwitchNow() below
+        ImportExportTooltip('ReadSettingsProfiles');
+    //NOPE.XWait 200ms for everything to reset and then re-select the old index.
+    //setTimeout(function(){ settingsProfiles.selectedIndex = index;} ,200);
+    return;
+}
+
+function confirmedSwitchNow() {
+    if ($settingsProfiles == null) return;
+    var index = $settingsProfiles.selectedIndex;
+    var profname = $settingsProfiles.options[index].text;
+    //load the stored profiles from browser
+    var loadLastProfiles = JSON.parse(localStorage.getItem('ATSelectedSettingsProfile'));
+    if (loadLastProfiles != null) {
+        var results = loadLastProfiles.filter(function(elem,i){
+            return elem.name == profname;
+        });
+        if (results.length > 0) {
+            resetAutoTrimps(results[0].data,profname);
+            debug("Successfully loaded existing profile: " + profname, "profile");
+        }
+    }
+}
+
+//called by ImportExportTooltip('NameSettingsProfiles')
+function nameAndSaveNewProfile() {
+    //read the name in from tooltip
+    try {
+        var profname = document.getElementById("setSettingsNameTooltip").value.replace(/[\n\r]/gm, "");
+        if (profname == null) {
+            debug("Error in naming, the string is empty.", "profile");
+            return;
+        }
+    } catch (err) {
+        debug("Error in naming, the string is bad." + err.message, "profile");
+        return;
+    }
+    var profile = {
+        name: profname,
+        data: JSON.parse(serializeSettings())
+    }
+    //load the old data in,
+    var loadLastProfiles = localStorage.getItem('ATSelectedSettingsProfile');
+    var oldpresets = loadLastProfiles ? JSON.parse(loadLastProfiles) : new Array(); //load the import.
+    //rewrite the updated array in
+    var presetlists = [profile];
+    //add the two arrays together, string them, and store them.
+    safeSetItems('ATSelectedSettingsProfile', JSON.stringify(oldpresets.concat(presetlists)));
+    debug("Successfully created new profile: " + profile.name, "profile");
+    ImportExportTooltip('message', 'Successfully created new profile: ' + profile.name);
+    //Update dropdown menu to reflect new name:
+    let optionElementReference = new Option(profile.name);
+    optionElementReference.id = 'customProfileRead';
+    if ($settingsProfiles == null) return;
+    $settingsProfiles.add(optionElementReference);
+    $settingsProfiles.selectedIndex = $settingsProfiles.length-1;
+}
+
+//event handler for profile delete button - confirmation check tooltip
+function onDeleteProfileHandler() {
+    ImportExportTooltip('DeleteSettingsProfiles');  //calls a tooltip then onDeleteProfile() below
+}
+//Delete Profile runs after.
+function onDeleteProfile() {
+    if ($settingsProfiles == null) return;
+    var index = $settingsProfiles.selectedIndex;
+    //Remove the option
+    $settingsProfiles.options.remove(index);
+    //Stay on the same index (becomes next item) - so we dont have to Toggle into a new profile again and can keep chain deleting.
+    $settingsProfiles.selectedIndex = (index > ($settingsProfiles.length-1)) ? $settingsProfiles.length-1 : index;
+    //load the old data in:
+    var loadLastProfiles = localStorage.getItem('ATSelectedSettingsProfile');
+    var oldpresets = loadLastProfiles ? JSON.parse(loadLastProfiles) : new Array(); //load the import.
+    //rewrite the updated array in. string them, and store them.
+    var target = (index-3); //subtract the 3 default choices out
+    oldpresets.splice(target, 1);
+    safeSetItems('ATSelectedSettingsProfile', JSON.stringify(oldpresets));
+    debug("Successfully deleted profile #: " + target, "profile");
+}
 
 function ImportExportTooltip(what, event) {
     if (game.global.lockTooltip)
